@@ -1,0 +1,45 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etCostumeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del disfraz" />
+
+    <EditText
+        android:id="@+id/etCostumeState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Estado del disfraz" />
+
+    <EditText
+        android:id="@+id/etCostumePrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Precio"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/etCostumeSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Talla" />
+
+    <EditText
+        android:id="@+id/etCostumeStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Cantidad en stock"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCostumeImageName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de la imagen (sin extensión)" />
+</LinearLayout>

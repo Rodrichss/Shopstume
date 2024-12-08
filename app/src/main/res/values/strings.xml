@@ -36,5 +36,12 @@
         <item>Administrador</item>
     </string-array>
 
+    <string name="search">Buscar</string>
+    <string name="nombre_disfraz">Nombre de disfraz</string>
+    <string name="estado_disfraz">Estado</string>
+    <string name="precio_disfraz">Precio</string>
+    <string name="talla_disfraz">Talla</string>
+    <string name="stock_disfraz">Stock</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
