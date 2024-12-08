@@ -23,13 +23,12 @@
                 android:layout_height="100dp"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="center"
-                android:layout_alignParentLeft="true"
                 app:srcCompat="@drawable/costume1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:orientation="vertical"
                 android:layout_toEndOf="@id/imageCostume">
 
@@ -71,8 +70,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="30dp"
                 android:layout_toStartOf="@id/btnDeleteCostume"
-                android:src="@drawable/edit_icon"
-                android:layout_toEndOf="@id/textUserRole"/>
+                android:src="@drawable/edit_icon" />
 
             <ImageButton
                 android:id="@+id/btnDeleteCostume"
@@ -80,9 +78,7 @@
                 android:layout_height="45dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/delete_icon"
-                android:layout_toEndOf="@id/btnEditUser"
-                />
+                android:src="@drawable/delete_icon" />
 
         </RelativeLayout>
     </LinearLayout>
