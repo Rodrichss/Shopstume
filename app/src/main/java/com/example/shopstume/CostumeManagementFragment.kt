@@ -34,11 +34,8 @@ class CostumeManagementFragment : Fragment() {
 
         sharedPreferences = requireContext().getSharedPreferences("CostumePrefs", Context.MODE_PRIVATE)
 
-        costumeAdapter = CostumeAdapter(costumesList) { action, costume ->
-            when (action) {
-                //"edit" -> editCostume(costume)
-                "delete" -> deleteCostume(costume)
-            }
+        costumeAdapter = CostumeAdapter(costumesList) { costume ->
+            showCostumeDetailsDialog(costume) // Muestra el diálogo con los detalles del disfraz
         }
 
         rCostumes.layoutManager = LinearLayoutManager(requireContext())
@@ -91,6 +88,30 @@ class CostumeManagementFragment : Fragment() {
         sharedPreferences.edit().putString("costumes", jsonArray.toString()).apply()
     }
 
+    private fun showCostumeDetailsDialog(costume: Costume) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_show_costume_details, null)
+
+        val costumeNameTextView = dialogView.findViewById<TextView>(R.id.tvCostumeName)
+        val costumeStateTextView = dialogView.findViewById<TextView>(R.id.tvCostumeState)
+        val costumePriceTextView = dialogView.findViewById<TextView>(R.id.tvCostumePrice)
+        val costumeSizeTextView = dialogView.findViewById<TextView>(R.id.tvCostumeSize)
+        val costumeStockTextView = dialogView.findViewById<TextView>(R.id.tvCostumeStock)
+        val costumeImageView = dialogView.findViewById<ImageView>(R.id.ivCostumeImage)
+
+        costumeNameTextView.text = costume.name
+        costumeStateTextView.text = costume.state
+        costumePriceTextView.text = "Precio: ${costume.price}"
+        costumeSizeTextView.text = "Tamaño: ${costume.size}"
+        costumeStockTextView.text = "Stock: ${costume.stock}"
+        costumeImageView.setImageResource(costume.image)
+
+        val builder = AlertDialog.Builder(requireContext())
+            .setTitle("Detalles del Disfraz")
+            .setView(dialogView)
+            .setPositiveButton("Cerrar") { dialog, _ -> dialog.dismiss() }
+
+        builder.create().show()
+    }
 
     private fun deleteCostume(costume: Costume) {
         val builder = AlertDialog.Builder(requireContext())
@@ -105,54 +126,5 @@ class CostumeManagementFragment : Fragment() {
             .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
 
         builder.create().show()
-    }
-
-    private fun showAddCostumeDialog(){
-//        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_costume, null)
-//        val builder = AlertDialog.Builder(requireContext())
-//        val imageSelectedTextView = dialogView.findViewById<TextView>(R.id.tvSelectedImageName)
-//        val selectImageButton = dialogView.findViewById<FloatingActionButton>(R.id.btnSelectImage)
-//
-//        var selectedImageName = ""
-//
-//        selectImageButton.setOnClickListener {
-//            showCostumeImagePicker { imageName ->
-//                selectedImageName = imageName
-//                imageSelectedTextView.text = "Imagen seleccionada: $imageName"
-//            }
-//        }
-//
-//        builder.setTitle("Añadir disfraz")
-//            .setView(dialogView)
-//            .setPositiveButton("Guardar") { dialog, _ ->
-//                val name = dialogView.findViewById<TextView>(R.id.etCostumeName).text.toString()
-//                val state = dialogView.findViewById<TextView>(R.id.etCostumeState).text.toString()
-//                val price = dialogView.findViewById<TextView>(R.id.etCostumePrice).text.toString().toDoubleOrNull() ?: 0.0
-//                val size = dialogView.findViewById<TextView>(R.id.etCostumeSize).text.toString()
-//                val stock = dialogView.findViewById<TextView>(R.id.etCostumeStock).text.toString().toIntOrNull() ?: 0
-//
-//                val imageRes = resources.getIdentifier(selectedImageName, "drawable", requireContext().packageName)
-//                if (imageRes == 0) {
-//                    Log.e("CostumeManagement", "Imagen no seleccionada o no encontrada")
-//                    return@setPositiveButton
-//                }
-//
-//                val newCostume = Costume(
-//                    idCostume = costumesList.size + 1,
-//                    name = name,
-//                    state = state,
-//                    price = price,
-//                    size = size,
-//                    stock = stock,
-//                    image = imageRes
-//                )
-//                costumesList.add(newCostume)
-//                costumeAdapter.addCostume(newCostume)
-//                saveCostumes()
-//                dialog.dismiss()
-//            }
-//            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
-//
-//        builder.create().show()
     }
 }

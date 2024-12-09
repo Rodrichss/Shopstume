@@ -1,0 +1,50 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/ivCostumeImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_costume" />
+
+    <TextView
+        android:id="@+id/tvCostumeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre del Disfraz"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tvCostumeState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estado"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvCostumePrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Precio"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvCostumeSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tamaño"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvCostumeStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stock"
+        android:textSize="16sp" />
+</LinearLayout>
