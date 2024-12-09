@@ -1,0 +1,23 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <!-- Imagen del disfraz -->
+    <ImageView
+        android:id="@+id/ivCostumeImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/default_costume" />
+
+    <!-- Nombre del disfraz -->
+    <TextView
+        android:id="@+id/tvCostumeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del Disfraz"
+        android:textSize="16sp" />
+</LinearLayout>
