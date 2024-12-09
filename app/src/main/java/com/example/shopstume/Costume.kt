@@ -7,6 +7,6 @@ class Costume (
     var price: Double,
     var size: String,
     var stock: Int,
-    var image: Int
+    var image: String
 ){
 }

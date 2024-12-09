@@ -1,5 +1,6 @@
 package com.example.shopstume
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -45,7 +46,7 @@ class CostumeManagementFragment : Fragment() {
 
         costumeAdapter = CostumeAdapter(filteredCostumesList) { action, costume ->
             when (action) {
-                //"edit" -> editCostume(costume)
+                "edit" -> editCostume(costume)
                 "delete" -> deleteCostume(costume)
             }
         }
@@ -90,7 +91,7 @@ class CostumeManagementFragment : Fragment() {
                 jsonObject.getDouble("price"),
                 jsonObject.getString("size"),
                 jsonObject.getInt("stock"),
-                jsonObject.getInt("image")
+                jsonObject.getString("image")
             )
             costumesList.add(costume)
             Log.d("CostumeManagement", "Nuevo disfraz agregado: ${costume.name}")
@@ -148,8 +149,9 @@ class CostumeManagementFragment : Fragment() {
     private fun showAddCostumeDialog(){
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_costume, null)
         val builder = AlertDialog.Builder(requireContext())
-        val selectImageButton = dialogView.findViewById<ImageButton>(R.id.btnSelectImage)
+        //val selectImageButton = dialogView.findViewById<ImageButton>(R.id.btnSelectImage)
         val sizesSpinner = dialogView.findViewById<Spinner>(R.id.spinnerSizes)
+        val imagesSpinner = dialogView.findViewById<Spinner>(R.id.spinnerImages)
 
         val lstSizes = resources.getStringArray(R.array.sizes)
         val sizesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lstSizes)
@@ -165,16 +167,32 @@ class CostumeManagementFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 TODO("Not yet implemented")
             }
+        }
+
+        val lstImages = resources.getStringArray(R.array.costume_images)
+        val imagesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lstImages)
+        imagesSpinner.adapter = imagesAdapter
+        var imagesSel = lstImages[0]
+
+        imagesSpinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                imagesSel = lstImages[position]
             }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
 
         var selectedImageName = ""
 
-        selectImageButton.setOnClickListener {
-            showCostumeImagePicker { imageName ->
-                selectedImageName = imageName
-
-            }
-        }
+//        selectImageButton.setOnClickListener {
+//            showCostumeImagePicker { imageName ->
+//                selectedImageName = imageName
+//
+//            }
+//        }
 
         builder.setTitle("Añadir disfraz")
             .setView(dialogView)
@@ -184,11 +202,11 @@ class CostumeManagementFragment : Fragment() {
                 val stock = dialogView.findViewById<TextView>(R.id.etCostumeStock).text.toString().toIntOrNull() ?: 0
                 val state = if (stock > 0) "Disponible" else "Agotado"
 
-                val imageRes = resources.getIdentifier(selectedImageName, "drawable", requireContext().packageName)
-                if (imageRes == 0) {
-                    Log.e("CostumeManagement", "Imagen no seleccionada o no encontrada")
-                    return@setPositiveButton
-                }
+//                val imageRes = resources.getIdentifier(selectedImageName, "drawable", requireContext().packageName)
+//                if (imageRes == 0) {
+//                    Log.e("CostumeManagement", "Imagen no seleccionada o no encontrada")
+//                    return@setPositiveButton
+//                }
 
                 val newCostume = Costume(
                     idCostume = costumesList.size + 1,
@@ -197,11 +215,74 @@ class CostumeManagementFragment : Fragment() {
                     price = price,
                     size = sizesSel,
                     stock = stock,
-                    image = imageRes
+                    image = imagesSel
                 )
                 costumesList.add(newCostume)
                 costumeAdapter.addCostume(newCostume)
                 saveCostumes()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+
+        builder.create().show()
+    }
+
+    @SuppressLint("CutPasteId")
+    private fun editCostume(costume: Costume){
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_costume, null)
+        val builder = AlertDialog.Builder(requireContext())
+
+        // Inicializamos el spinner y otros elementos del diálogo
+        val sizesSpinner = dialogView.findViewById<Spinner>(R.id.spinnerSizes)
+        val imagesSpinner = dialogView.findViewById<Spinner>(R.id.spinnerImages)
+
+        val lstSizes = resources.getStringArray(R.array.sizes)
+        val sizesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lstSizes)
+        sizesSpinner.adapter = sizesAdapter
+        sizesSpinner.setSelection(lstSizes.indexOf(costume.size)) // Pre-seleccionamos el tamaño actual
+
+        val lstImages = resources.getStringArray(R.array.costume_images)
+        val imagesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lstImages)
+        imagesSpinner.adapter = imagesAdapter
+        imagesSpinner.setSelection(lstImages.indexOf(costume.image)) // Pre-seleccionamos la imagen actual
+
+        val nameEditText: EditText = dialogView.findViewById(R.id.etCostumeName)
+        val priceEditText: EditText = dialogView.findViewById(R.id.etCostumePrice)
+        val stockEditText: EditText = dialogView.findViewById(R.id.etCostumeStock)
+
+        nameEditText.setText(costume.name)  // Pre-llenar con el nombre del disfraz
+        priceEditText.setText(costume.price.toString())  // Pre-llenar con el precio del disfraz
+        stockEditText.setText(costume.stock.toString())
+
+        builder.setTitle("Editar disfraz")
+            .setView(dialogView)
+            .setPositiveButton("Guardar") { dialog, _ ->
+                val name = nameEditText.text.toString()
+                val price = priceEditText.text.toString().toDoubleOrNull() ?: 0.0
+                val stock = stockEditText.text.toString().toIntOrNull() ?: 0
+                val state = if (stock > 0) "Disponible" else "Agotado"
+                val size = sizesSpinner.selectedItem.toString()
+                val image = imagesSpinner.selectedItem.toString()
+
+                // Creamos un nuevo objeto Costume con los valores editados
+                val updatedCostume = Costume(
+                    idCostume = costume.idCostume,
+                    name = name,
+                    state = state,
+                    price = price,
+                    size = size,
+                    stock = stock,
+                    image = image
+                )
+
+                // Actualizamos la lista de disfraces
+                val index = costumesList.indexOf(costume)
+                if (index != -1) {
+                    costumesList[index] = updatedCostume
+                    costumeAdapter.updateCostumes(costumesList)
+                    saveCostumes()  // Guardamos los cambios en SharedPreferences
+                }
+
                 dialog.dismiss()
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }

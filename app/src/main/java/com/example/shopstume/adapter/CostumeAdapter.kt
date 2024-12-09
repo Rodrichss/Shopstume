@@ -36,7 +36,7 @@ class CostumeAdapter(private var costumes: MutableList<Costume>,
         val costume: Costume = costumes[position]
 
         val imageRes = holder.itemView.context.resources.getIdentifier(
-            "costume${costume.image}","drawable", holder.itemView.context.packageName
+            costume.image,"drawable", holder.itemView.context.packageName
         )
 
         if(imageRes != 0){

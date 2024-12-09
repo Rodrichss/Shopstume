@@ -20,6 +20,14 @@
         android:hint="@string/precio_disfraz"
         android:inputType="numberDecimal" />
 
+    <TextView
+        android:id="@+id/tvTallas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sizes"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
     <Spinner
         android:id="@+id/spinnerSizes"
         android:layout_width="match_parent"
@@ -32,11 +40,18 @@
         android:hint="@string/stock_disfraz"
         android:inputType="number" />
 
-    <ImageButton
-        android:id="@+id/btnSelectImage"
+    <TextView
+        android:id="@+id/tvImages"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:srcCompat="@drawable/ic_menu_gallery" />
+        android:layout_height="wrap_content"
+        android:text="@string/images"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
+    <Spinner
+        android:id="@+id/spinnerImages"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
 
 
 </LinearLayout>
