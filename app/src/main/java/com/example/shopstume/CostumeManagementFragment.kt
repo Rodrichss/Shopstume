@@ -108,6 +108,7 @@ class CostumeManagementFragment : Fragment() {
                 it.name.contains(query, ignoreCase = true)
             }.toMutableList()
         }
+        Log.d("FilterCostumes", "Número de disfraces filtrados: ${filteredCostumesList.size}")
 
         costumeAdapter.updateCostumes(filteredCostumesList)
     }

@@ -57,7 +57,8 @@ class CostumeAdapter(private var costumes: MutableList<Costume>,
     override fun getItemCount(): Int = costumes.size
 
     fun updateCostumes(newCostumes: MutableList<Costume>) {
-        costumes = newCostumes
+        costumes.clear()
+        costumes.addAll(newCostumes)
         notifyDataSetChanged()
     }
 
