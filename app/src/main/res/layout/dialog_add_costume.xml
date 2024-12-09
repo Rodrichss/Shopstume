@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -8,38 +9,34 @@
     <EditText
         android:id="@+id/etCostumeName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre del disfraz" />
-
-    <EditText
-        android:id="@+id/etCostumeState"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Estado del disfraz" />
+        android:layout_height="48dp"
+        android:hint="@string/nombre_disfraz"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/etCostumePrice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Precio"
+        android:layout_height="48dp"
+        android:hint="@string/precio_disfraz"
         android:inputType="numberDecimal" />
 
-    <EditText
-        android:id="@+id/etCostumeSize"
+    <Spinner
+        android:id="@+id/spinnerSizes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Talla" />
+        android:layout_height="48dp" />
 
     <EditText
         android:id="@+id/etCostumeStock"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Cantidad en stock"
+        android:layout_height="48dp"
+        android:hint="@string/stock_disfraz"
         android:inputType="number" />
 
-    <EditText
-        android:id="@+id/etCostumeImageName"
+    <ImageButton
+        android:id="@+id/btnSelectImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre de la imagen (sin extensión)" />
+        android:layout_height="48dp"
+        app:srcCompat="@drawable/ic_menu_gallery" />
+
+
 </LinearLayout>

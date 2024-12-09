@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -108,51 +112,81 @@ class CostumeManagementFragment : Fragment() {
     }
 
     private fun showAddCostumeDialog(){
-//        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_costume, null)
-//        val builder = AlertDialog.Builder(requireContext())
-//        val imageSelectedTextView = dialogView.findViewById<TextView>(R.id.tvSelectedImageName)
-//        val selectImageButton = dialogView.findViewById<FloatingActionButton>(R.id.btnSelectImage)
-//
-//        var selectedImageName = ""
-//
-//        selectImageButton.setOnClickListener {
-//            showCostumeImagePicker { imageName ->
-//                selectedImageName = imageName
-//                imageSelectedTextView.text = "Imagen seleccionada: $imageName"
-//            }
-//        }
-//
-//        builder.setTitle("Añadir disfraz")
-//            .setView(dialogView)
-//            .setPositiveButton("Guardar") { dialog, _ ->
-//                val name = dialogView.findViewById<TextView>(R.id.etCostumeName).text.toString()
-//                val state = dialogView.findViewById<TextView>(R.id.etCostumeState).text.toString()
-//                val price = dialogView.findViewById<TextView>(R.id.etCostumePrice).text.toString().toDoubleOrNull() ?: 0.0
-//                val size = dialogView.findViewById<TextView>(R.id.etCostumeSize).text.toString()
-//                val stock = dialogView.findViewById<TextView>(R.id.etCostumeStock).text.toString().toIntOrNull() ?: 0
-//
-//                val imageRes = resources.getIdentifier(selectedImageName, "drawable", requireContext().packageName)
-//                if (imageRes == 0) {
-//                    Log.e("CostumeManagement", "Imagen no seleccionada o no encontrada")
-//                    return@setPositiveButton
-//                }
-//
-//                val newCostume = Costume(
-//                    idCostume = costumesList.size + 1,
-//                    name = name,
-//                    state = state,
-//                    price = price,
-//                    size = size,
-//                    stock = stock,
-//                    image = imageRes
-//                )
-//                costumesList.add(newCostume)
-//                costumeAdapter.addCostume(newCostume)
-//                saveCostumes()
-//                dialog.dismiss()
-//            }
-//            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
-//
-//        builder.create().show()
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_costume, null)
+        val builder = AlertDialog.Builder(requireContext())
+        val selectImageButton = dialogView.findViewById<ImageButton>(R.id.btnSelectImage)
+        val sizesSpinner = dialogView.findViewById<Spinner>(R.id.spinnerSizes)
+
+        val lstSizes = resources.getStringArray(R.array.sizes)
+        val sizesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lstSizes)
+        sizesSpinner.adapter = sizesAdapter
+        var sizesSel = lstSizes[0]
+
+        sizesSpinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                sizesSel = lstSizes[position]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+            }
+
+        var selectedImageName = ""
+
+        selectImageButton.setOnClickListener {
+            showCostumeImagePicker { imageName ->
+                selectedImageName = imageName
+
+            }
+        }
+
+        builder.setTitle("Añadir disfraz")
+            .setView(dialogView)
+            .setPositiveButton("Guardar") { dialog, _ ->
+                val name = dialogView.findViewById<TextView>(R.id.etCostumeName).text.toString()
+                val price = dialogView.findViewById<TextView>(R.id.etCostumePrice).text.toString().toDoubleOrNull() ?: 0.0
+                val stock = dialogView.findViewById<TextView>(R.id.etCostumeStock).text.toString().toIntOrNull() ?: 0
+                val state = if (stock > 0) "Disponible" else "Agotado"
+
+                val imageRes = resources.getIdentifier(selectedImageName, "drawable", requireContext().packageName)
+                if (imageRes == 0) {
+                    Log.e("CostumeManagement", "Imagen no seleccionada o no encontrada")
+                    return@setPositiveButton
+                }
+
+                val newCostume = Costume(
+                    idCostume = costumesList.size + 1,
+                    name = name,
+                    state = state,
+                    price = price,
+                    size = sizesSel,
+                    stock = stock,
+                    image = imageRes
+                )
+                costumesList.add(newCostume)
+                costumeAdapter.addCostume(newCostume)
+                saveCostumes()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+
+        builder.create().show()
+    }
+
+    private fun showCostumeImagePicker(onImageSelected: (String) -> Unit) {
+        val drawableNames = resources.getStringArray(R.array.costume_images) // Puedes definir este array en strings.xml
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Selecciona una imagen")
+            .setItems(drawableNames) { _, which ->
+                // Cuando el usuario selecciona una imagen, se pasa el nombre de la imagen al callback
+                val selectedImageName = drawableNames[which]
+                onImageSelected(selectedImageName)
+            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+
+        builder.create().show()
     }
 }

@@ -42,6 +42,18 @@
     <string name="precio_disfraz">Precio</string>
     <string name="talla_disfraz">Talla</string>
     <string name="stock_disfraz">Stock</string>
+    
+    <string-array name="sizes">
+        <item>Chica</item>
+        <item>Mediana</item>
+        <item>Grande</item>
+        <item>Muy grande</item>
+    </string-array>
+
+    <string-array name="costume_images">
+        <item>costume1</item>
+        <item>costume2</item>
+    </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
