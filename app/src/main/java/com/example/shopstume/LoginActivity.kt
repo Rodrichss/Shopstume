@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 finishAffinity()
             }else{
-                Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Lo sentimos, Algo salio mal. :,(", Toast.LENGTH_SHORT).show()
             }
         }
     }
