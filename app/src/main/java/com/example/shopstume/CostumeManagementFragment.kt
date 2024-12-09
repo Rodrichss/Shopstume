@@ -3,6 +3,8 @@ package com.example.shopstume
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
@@ -27,6 +30,7 @@ class CostumeManagementFragment : Fragment() {
     private lateinit var costumeAdapter: CostumeAdapter
     private lateinit var sharedPreferences: SharedPreferences
     private val costumesList = mutableListOf<Costume>()
+    private var filteredCostumesList = mutableListOf<Costume>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,10 +39,11 @@ class CostumeManagementFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_costume_management, container, false)
         rCostumes = view.findViewById(R.id.rvCostumes)
         val fabAddCostume: FloatingActionButton = view.findViewById(R.id.fabAddCostume)
+        val editSearchCostume: EditText = view.findViewById(R.id.editSearchCostume)
 
         sharedPreferences = requireContext().getSharedPreferences("CostumePrefs", Context.MODE_PRIVATE)
 
-        costumeAdapter = CostumeAdapter(costumesList) { action, costume ->
+        costumeAdapter = CostumeAdapter(filteredCostumesList) { action, costume ->
             when (action) {
                 //"edit" -> editCostume(costume)
                 "delete" -> deleteCostume(costume)
@@ -53,6 +58,20 @@ class CostumeManagementFragment : Fragment() {
         fabAddCostume.setOnClickListener {
             showAddCostumeDialog()
         }
+
+        editSearchCostume.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterCostumes(s.toString())
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
 
         return view
     }
@@ -76,7 +95,21 @@ class CostumeManagementFragment : Fragment() {
             costumesList.add(costume)
             Log.d("CostumeManagement", "Nuevo disfraz agregado: ${costume.name}")
         }
+
+        filteredCostumesList = costumesList.toMutableList()
         costumeAdapter.updateCostumes(costumesList)
+    }
+
+    private fun filterCostumes(query:String){
+        filteredCostumesList = if(query.isEmpty()) {
+            costumesList.toMutableList()
+        }else{
+            costumesList.filter {
+                it.name.contains(query, ignoreCase = true)
+            }.toMutableList()
+        }
+
+        costumeAdapter.updateCostumes(filteredCostumesList)
     }
 
     private fun saveCostumes() {
